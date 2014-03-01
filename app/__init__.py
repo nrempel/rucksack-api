@@ -5,7 +5,7 @@ import os
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
-environment = os.environ.get('ENVIRONMENT')
+environment = os.environ['ENVIRONMENT']
 
 app = Flask(__name__)
 app.config.from_object('settings.%s' % environment)
