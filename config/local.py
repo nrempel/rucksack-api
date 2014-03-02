@@ -3,6 +3,7 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+PORT = 5000
 DEBUG = True
 CSRF_ENABLED = False
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']

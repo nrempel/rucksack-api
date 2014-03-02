@@ -6,4 +6,6 @@ from config import config_path
 # Config
 app.config.from_object(config_path)
 # Run
-app.run(debug=app.config['DEBUG'])
+app.run(
+    debug=app.config['DEBUG'],
+    port=app.config['PORT'])
