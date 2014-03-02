@@ -6,5 +6,5 @@ from app.models import WebComponent
 
 @app.route("/")
 def hello():
-    num_components = WebComponent.query.all().count()
+    num_components = len(WebComponent.query.all())
     return "Number of records: %d" % num_components
