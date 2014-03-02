@@ -10,8 +10,8 @@ ROLE_ADMIN = 1
 # Many-to-many helper table
 components_tags = db.Table(
     'components_tags',
-    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-    db.Column('component_id', db.Integer, db.ForeignKey('component.id'))
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+    db.Column('component_id', db.Integer, db.ForeignKey('components.id'))
 )
 
 
@@ -42,7 +42,7 @@ class WebComponent(db.Model):
         index=True,
         unique=True)
     description = db.Column(db.String)
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     owner = db.relationship(
         'User', backref=db.backref('components', lazy='dynamic'))
     repository_url = db.Column(db.String(256))
