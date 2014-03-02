@@ -8,14 +8,15 @@ ROLE_USER = 0
 ROLE_ADMIN = 1
 
 # Many-to-many helper table
-tags = db.Table(
-    'tags',
+components_tags = db.Table(
+    'components_tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
     db.Column('component_id', db.Integer, db.ForeignKey('component.id'))
 )
 
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime)
     username = db.Column(db.String(128), index=True, unique=True)
@@ -33,6 +34,7 @@ class User(db.Model):
 
 
 class WebComponent(db.Model):
+    __tablename__ = 'components'
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime)
     name = db.Column(
@@ -41,12 +43,12 @@ class WebComponent(db.Model):
         unique=True)
     description = db.Column(db.String)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
-    owner = db.Column(db.relationship(
-        'User', backref=db.backref('components', lazy='dynamic')))
-    repository_url = description = db.Column(db.String(256))
+    owner = db.relationship(
+        'User', backref=db.backref('components', lazy='dynamic'))
+    repository_url = db.Column(db.String(256))
     tags = db.relationship(
         'Tag',
-        secondary=tags,
+        secondary=components_tags,
         backref=db.backref('components', lazy='dynamic'))
 
     def __init__(
@@ -66,6 +68,7 @@ class WebComponent(db.Model):
 
 
 class Tag(db.Model):
+    __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime)
     name = db.Column(db.String(64), index=True, unique=True)
