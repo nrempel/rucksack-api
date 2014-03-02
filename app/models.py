@@ -13,4 +13,4 @@ class User(db.Model):
     role = db.Column(db.SmallInteger, default=ROLE_USER)
 
     def __repr__(self):
-        return '<User %r>' % (self.username)
+        return '<User:%s>' % (self.username)
