@@ -7,5 +7,6 @@ from config import config_path
 app.config.from_object(config_path)
 # Run
 app.run(
+    host='0.0.0.0',
     debug=app.config['DEBUG'],
     port=app.config['PORT'])
