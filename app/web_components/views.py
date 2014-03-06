@@ -1,25 +1,59 @@
 # -*- coding: utf-8 -*-
 
-# from flask import jsonify
-from flask.views import MethodView
+from flask.ext.restful import abort, reqparse, Resource
 
-from app.util import register_api
-# from app.web_components.models import WebComponents
+from app import api, db
+from app.users.models import User
+from app.web_components.models import WebComponent
 
 
-class WebComponentsAPI(MethodView):
-    def get(self, id):
-        # component = WebComponents.query.filter(id=id)
-        return 'WebComponents stub'
+# Required arguments in API call
+parser = reqparse.RequestParser()
+parser.add_argument('name', type=str, required=True)
+parser.add_argument('description', type=str, required=True)
+parser.add_argument('owner', type=str, required=True)
+parser.add_argument('repository_url', type=str, required=True)
 
-    # TODO: implement
-    # def put(self, id):
-    #     pass
 
-    # def post(self, id):
-    #     pass
+class WebComponentList(Resource):
+    def get(self):
+        return [
+            dict(web_component)
+            for web_component
+            in WebComponent.query.all()]
 
-    # def delete(self, id):
-    #     pass
+    def post(self):
+        args = parser.parse_args()
 
-register_api(WebComponentsAPI, 'web_components', '/web_components/')
+        name = args['name']
+
+        # TODO: Validate url?
+
+        # Validate unique name
+        web_component = WebComponent.query.filter_by(name=name).first()
+        if web_component:
+            abort(
+                409,
+                message='Conflict: ' +
+                'a web component with the name %s already exists'
+                % name)
+
+        username = args['owner']
+        owner = User.query.filter_by(username=username).first()
+        if not owner:
+            abort(
+                400,
+                message='Bad Request: username %s doesn\'t exist'
+                % username)
+
+        web_component = WebComponent(
+            name=args['name'],
+            description=args['description'],
+            owner=owner,
+            repository_url=args['repository_url'])
+        db.session.add(web_component)
+        db.session.commit()
+
+        return dict(web_component)
+
+api.add_resource(WebComponentList, '/web_components')

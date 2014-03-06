@@ -6,6 +6,6 @@ from app import db
 
 components_tags = db.Table(
     'components_tags',
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
-    db.Column('component_id', db.Integer, db.ForeignKey('components.id'))
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+    db.Column('component_id', db.Integer, db.ForeignKey('web_component.id'))
 )

@@ -1,25 +1,62 @@
 # -*- coding: utf-8 -*-
 
-# from flask import jsonify
-from flask.views import MethodView
+from flask.ext.restful import abort, reqparse, Resource
+from sqlalchemy.exc import IntegrityError
 
-# from app.users.models import Users
-from app.util import register_api
+from app import api, db
+from app.users.models import User
+
+parser = reqparse.RequestParser()
+parser.add_argument('username', type=str, required=True)
+parser.add_argument('email', type=str, required=True)
+parser.add_argument('role', type=int)
 
 
-class UsersAPI(MethodView):
-    def get(self, id):
-        # user = Users.query.filter(id=id)
-        return 'Users stub'
+class UserList(Resource):
+    def get(self):
+        return [
+            dict(user)
+            for user
+            in User.query.all()]
 
-    # TODO: implement
-    # def put(self, id):
-    #     pass
+    def post(self):
+        args = parser.parse_args()
 
-    # def post(self, id):
-    #     pass
+        # TODO: Validate email
 
-    # def delete(self, id):
-    #     pass
+        # TODO: Figure out roles
 
-register_api(UsersAPI, 'users', '/users/')
+        username = args['username']
+        email = args['email']
+
+        # Validate unique username
+        user = User.query.filter_by(username=username).first()
+        if user:
+            abort(
+                409,
+                message='Conflict: a user with the username %s already exists'
+                % username)
+
+        # Validate unique email
+        user = User.query.filter_by(email=email).first()
+        if user:
+            abort(
+                409,
+                message='Conflict: a user with the email %s already exists'
+                % email)
+
+        # Create new user
+        user = User(
+            username=args['username'],
+            email=args['email'],
+            role=args.get('role') or User.ROLE_USER)
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except IntegrityError:
+            abort(500)
+
+        return dict(user)
+
+api.add_resource(UserList, '/users')

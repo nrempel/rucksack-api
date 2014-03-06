@@ -3,13 +3,15 @@
 from datetime import datetime
 
 from app import db
-
-ROLE_USER = 0
-ROLE_ADMIN = 1
+from app.util import unix_time
 
 
-class Users(db.Model):
-    __tablename__ = 'users'
+class User(db.Model):
+    __tablename__ = 'user'
+
+    ROLE_USER = 0
+    ROLE_ADMIN = 1
+
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime)
     username = db.Column(db.String(128), index=True, unique=True)
@@ -21,6 +23,15 @@ class Users(db.Model):
         self.username = username
         self.email = email
         self.role = role
+
+    def __iter__(self):
+        return {
+            'id': self.id,
+            'created': unix_time(self.created),
+            'username': self.username,
+            'email': self.email,
+            'role': self.role
+        }.iteritems()
 
     def __repr__(self):
         return '<User:%s>' % self.username

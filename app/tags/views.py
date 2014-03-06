@@ -1,25 +1,38 @@
 # -*- coding: utf-8 -*-
 
-# from flask import jsonify
-from flask.views import MethodView
+from flask.ext.restful import Resource, reqparse
 
-# from app.tags.models import Tags
-from app.util import register_api
+from app import api, db
+from app.tags.models import Tag
+from app.web_components.models import WebComponent
 
 
-class TagsAPI(MethodView):
+parser = reqparse.RequestParser()
+parser.add_argument('name', type=str)
+
+
+class TagList(Resource):
     def get(self, id):
-        # tag = Tags.query.filter(id=id)
-        return 'Tags stub'
+        web_component = WebComponent.query.filter_by(id=id).first_or_404()
+        return [
+            dict(tag)
+            for tag
+            in web_component.tags.all()]
 
-    # TODO: implement
-    # def put(self, id):
-    #     pass
+    def post(self, id):
+        args = parser.parse_args()
+        web_component = WebComponent.query.filter_by(id=id).first_or_404()
 
-    # def post(self, id):
-    #     pass
+        # Get or create
+        name = args['name']
+        tag = Tag.query.filter_by(name=name).first()
+        if not tag:
+            tag = Tag(name=name)
 
-    # def delete(self, id):
-    #     pass
+        web_component.tags.append(tag)
+        db.session.commit()
 
-register_api(TagsAPI, 'tags', '/tags/')
+        return dict(web_component)
+
+
+api.add_resource(TagList, '/web_components/<int:id>/tags')

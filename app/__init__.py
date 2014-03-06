@@ -3,9 +3,12 @@
 # Init app and db for global reference
 
 from flask import Flask
+from flask.ext.restful import Api
 from flask.ext.sqlalchemy import SQLAlchemy
 
+
 app = Flask(__name__)
+api = Api(app)
 db = SQLAlchemy(app)
 
 # Add view controllers here
