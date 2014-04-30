@@ -89,6 +89,6 @@ Runs the webserver.
 
 ### shell
 
-*e.g., `fab shell:local`*
+*e.g., `fab shell:local`* 
 
 Runs a Python interactive shell in the given context.
