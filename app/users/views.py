@@ -14,10 +14,12 @@ parser.add_argument('role', type=int)
 
 class UserList(Resource):
     def get(self):
-        return [
+        return
+        [
             dict(user)
             for user
-            in User.query.all()]
+            in User.query.all()
+        ]
 
     def post(self):
         args = parser.parse_args()

@@ -1,7 +1,117 @@
 # Rucksack
 ----------
 
-Rucksack is a repository of [web components](http://www.w3.org/TR/components-intro/) and a tool to create and collect them.
+Rucksack is a repository of [web components](http://www.w3.org/TR/components-intro/) and a tool to create and collect them.  This is the API.
+
+## API Resources
+
+### users
+
+Available at */users*.
+
+#### GET
+
+Return a list of all users.
+
+Example:
+```json
+[
+  {
+    "created": 1398900632,
+    "email": "user@email.com",
+    "id": 1,
+    "username": "user"
+  },
+  ...
+]
+```
+
+#### POST
+
+Create a new user.
+
+Request body:
+
+```json
+{
+  "username": <username>,
+  "email": <email address>
+}
+```
+
+### web_components
+
+Available at */web_components*
+
+#### GET
+
+Return a list of all web components.
+
+Example:
+```json
+[
+  {
+    "created": 1398901345,
+    "description": "This is a test component.",
+    "id": 1,
+    "name": "Test Component",
+    "owner": {
+      "created": 1398900632,
+      "email": "user@email.com",
+      "id": 1,
+      "username": "user"
+    },
+    "repository_url": "https://github.com/username/test_component",
+    "tags": []
+  },
+  ...
+]
+```
+
+#### POST
+
+Create a new web component.
+
+Request body:
+```json
+{
+  "name": <name>,
+  "description": <description>,
+  "owner": <username of existant user>,
+  "repository_url": <relevant url>
+}
+```
+
+### tags
+
+Available at */web_components/<id>/tags*.
+
+#### GET
+
+Returns a list of all tags for the web component.
+
+Example:
+```json
+[
+  {
+    "created": 1398901909,
+    "id": 1,
+    "name": "Test Tag"
+  },
+  ...
+]
+```
+
+#### POST
+
+Add a tag to the web component.
+
+Request body:
+```json
+{
+  "name": "Test Tag"
+}
+```
 
 ## How to Setup the Server Locally (OS X)
 
@@ -89,6 +199,6 @@ Runs the webserver.
 
 ### shell
 
-*e.g., `fab shell:local`* 
+*e.g., `fab shell:local`*
 
 Runs a Python interactive shell in the given context.
