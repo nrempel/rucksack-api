@@ -50,7 +50,7 @@ mkvirtualenv rucksack-api
 
 **Now, to switch to your new environment you can do `workon rucksack-api`.**
 
-### 3. Run the server:
+### 3. Clone and Setup Project:
 
 Clone the repository:
 
@@ -64,16 +64,31 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
+Initalize the database:
+
+```sh
+fab shell
+```
+```python
+>>> db.create_all()
+```
+
+### 3. Run the Webserver:
+
+```sh
+fab run
+```
+
 ## Available Fabric Commands
 
 ### run
 
-*e.g., `fab run:local`*
+*e.g., `fab run`*
 
-Runs the webserver in the given context.  Defaults to local.
+Runs the webserver.
 
 ### shell
 
 *e.g., `fab shell:local`*
 
-Runs a Python interactive shell in the given context.  Defaults to local.
+Runs a Python interactive shell in the given context.

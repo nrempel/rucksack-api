@@ -3,7 +3,7 @@
 # This file is read when the python interactive shell starts up.
 # It's used to run python in the context of the Flask project.
 
-from app import app
+from app import api, app, db
 from config import config_path
 
 # Config
