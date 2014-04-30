@@ -3,5 +3,5 @@
 import os
 
 # Determine config file path based on environment
-environment = os.environ['ENVIRONMENT']
+environment = os.getenv('ENVIRONMENT', 'local')
 config_path = 'config.%s' % environment
