@@ -1,11 +1,11 @@
 # Rucksack
-----------
 
 Rucksack is a repository of [web components](http://www.w3.org/TR/components-intro/) and a tool to create and collect them.  This is the API.
 
 ## API Resources
 
 ### users
+---------
 
 Available at */users*.
 
@@ -40,6 +40,7 @@ Request body:
 ```
 
 ### web_components
+------------------
 
 Available at */web_components*
 
@@ -83,6 +84,7 @@ Request body:
 ```
 
 ### tags
+--------
 
 Available at */web_components/<id>/tags*.
 
