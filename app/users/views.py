@@ -9,24 +9,16 @@ from app.users.models import User
 parser = reqparse.RequestParser()
 parser.add_argument('username', type=str, required=True)
 parser.add_argument('email', type=str, required=True)
-parser.add_argument('role', type=int)
 
 
 class UserList(Resource):
     def get(self):
-        return
-        [
-            dict(user)
-            for user
-            in User.query.all()
-        ]
+        return [dict(user) for user in User.query.all()]
 
     def post(self):
         args = parser.parse_args()
 
         # TODO: Validate email
-
-        # TODO: Figure out roles
 
         username = args['username']
         email = args['email']
@@ -50,8 +42,7 @@ class UserList(Resource):
         # Create new user
         user = User(
             username=args['username'],
-            email=args['email'],
-            role=args.get('role') or User.ROLE_USER)
+            email=args['email'])
 
         try:
             db.session.add(user)

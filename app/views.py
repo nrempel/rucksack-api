@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from app import app
-from app.web_components.models import WebComponent
+
+
+INDEX = """
+<a href='/users'>users</a><br>
+<a href='/web_components'>web_components</a><br>
+"""
 
 
 # Index shows stats for the repository
 @app.route("/")
-def list_components():
-    num_components = len(WebComponent.query.all())
-    return "Number of web components: %d" % num_components
+def index():
+    return INDEX

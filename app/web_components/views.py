@@ -18,9 +18,7 @@ parser.add_argument('repository_url', type=str, required=True)
 class WebComponentList(Resource):
     def get(self):
         return [
-            dict(web_component)
-            for web_component
-            in WebComponent.query.all()]
+            dict(web_component) for web_component in WebComponent.query.all()]
 
     def post(self):
         args = parser.parse_args()

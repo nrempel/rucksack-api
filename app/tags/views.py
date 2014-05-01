@@ -14,10 +14,7 @@ parser.add_argument('name', type=str)
 class TagList(Resource):
     def get(self, id):
         web_component = WebComponent.query.filter_by(id=id).first_or_404()
-        return [
-            dict(tag)
-            for tag
-            in web_component.tags.all()]
+        return [dict(tag) for tag in web_component.tags]
 
     def post(self, id):
         args = parser.parse_args()
