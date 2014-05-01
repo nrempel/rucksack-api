@@ -86,7 +86,7 @@ Request body:
 ### tags
 --------
 
-Available at */web_components/<id>/tags*.
+Available at */web_components/:id/tags*.
 
 #### GET
 
