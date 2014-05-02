@@ -185,7 +185,7 @@ fab shell
 >>> db.create_all()
 ```
 
-### 3. Run the Webserver:
+### 4. Run the Webserver:
 
 ```sh
 fab run
